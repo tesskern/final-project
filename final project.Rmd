@@ -1,0 +1,15 @@
+---
+title: "Final Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+fao <-read.csv("/Users/tesssgggg/Downloads/FAO.csv")
+head(fao)
+dim(fao)
+```
+
