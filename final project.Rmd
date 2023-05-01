@@ -13,5 +13,9 @@ fao <- read_csv("FAO.csv")
 head(fao)
 dim(fao) 
 ```
+Tess Kern, Leah Greiner, Maheeka Devarakondra
+https://www.kaggle.com/datasets/dorbicycle/world-foodfeed-production?resource=download
+We went to kaggle to find a data set focusing on agriculture. We are both interested in getting jobs in the agriculture field, so we wanted to look at something agricultural related. Our data set looks at the growing population and where food is going. There are two main uses for the food/grain grown; food and feed. There are 63 columns in this data set, and over 21,000 rows. The data is represented since 1961 to 2013 and considers countries like Czechoslovakia and South Sudan and whether they are still a country or are a newly formed country since 1961. If the country is no longer, then it has been removed from the dataset. If the country has been newly formed since 1961, it is in the data set, but just has limited data. 
+Research Question: Is there an increase in a certain type of crop going towards feed or food.
 #data cleaning
-We need to determine what each countries abbreviation is. We also need to update the columns to the correct year. We need to convert the unit into the rest of the columns because each country has a different unit. We need to sort the items into categories such as vegetables, fruits, meats, and other to make the data easier to evaluate. 
+We need to determine what each country's abbreviation is. We also need to update the columns to the correct year. We need to convert the unit into the rest of the columns because each country has a different unit. We need to sort the items into categories such as vegetables, fruits, meats, and other to make the data easier to evaluate.
