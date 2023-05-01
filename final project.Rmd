@@ -8,9 +8,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-fao <- read_csv("~/Desktop/FAO.csv")
+library(readr)
+fao <- read_csv("FAO.csv")
 head(fao)
-dim(fao)
+dim(fao) 
 ```
 #data cleaning
 We need to determine what each countries abbreviation is. We also need to update the columns to the correct year. We need to convert the unit into the rest of the columns because each country has a different unit. We need to sort the items into categories such as vegetables, fruits, meats, and other to make the data easier to evaluate. 
