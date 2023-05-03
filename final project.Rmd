@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(tidyverse)
 fao <-read.csv("/Users/tesssgggg/Downloads/FAO.csv")
 head(fao)
 dim(fao)
@@ -19,5 +20,59 @@ sub_fao <- subset(unique(fao[, c("Area.Abbreviation", "Area")]), select = c("Are
 
 # print the two columns next to each other
 print(sub_fao)
+```
+```{r}
+#install "units" package
+library(units)
+
+```
+```{r}
+sub_food_fao <- subset(unique(fao[, c("Item.Code", "Item")]), select = c("Item.Code", "Item"))
+# print the two columns next to each other
+print(sub_food_fao)
+
+# use recode() to collapse levels into categories
+fao1 <- fao
+fao1$grain <- recode(fao$Item, "Wheat and products" = "Grain", "Rice (Milled Equivalent)" = "Grain",
+                       "Barley and products" = "Grain", "Maize and products" = "Grain", "	Millet and products" = "Grain", 
+                       "Cereals, Other" = "Grain", "Pulses, Other and products" = "Grain", "Pulses" = "Grain", 
+                     "" = "Grain")
+
+fao1$Vegetable <- recode(fao$Item, "Potatoes and products" = "Vegetable", "Vegetables, Other" = "Vegetable", 
+                         "Vegetables" = "Vegetable", 
+                         )
+
+fao1$Oil <- recode(fao$Item, "Soyabean Oil" = "Oil", "	Groundnut Oil" = "Oil", 
+                     "Sunflowerseed Oil" = "Oil", "	Rape and Mustard Oil" = "Oil", "Cottonseed Oil" = "Oil", 
+                   "Palm Oil" = "Oil", "	Sesameseed Oil" = "Oil", "Olive Oil" = "Oil", "Oilcrops Oil, Other" = "Oil", 
+                   "Oilcrops" = "Oil", "Vegetable Oils" = "Oil", "" = "Oil", "" = "Oil", )
+
+fao1$Other <- recode(fao$Item, "Sesame seed" = "Other", "" = "Other", "" = "Other", 
+                     "" = "Other", "" = "Other")
+
+fao1$Fruits <- recode(fao$Item, "Nuts and products" = "Fruits", "	Coconuts - Incl Copra" = "Fruits", "Olives (including preserved)" = "Fruits", "	Tomatoes and products" = "Fruits", "Oranges, Mandarines" = "Fruits", "Citrus, Other	" = "Fruits", 
+                      "Bananas" = "Fruits", "Apples and products" = "Fruits", "Pineapples and products" = "Fruits",
+                      "Dates" = "Fruits", "Grapes and products (excl wine)" = "Fruits", "Fruits, Other" = "Fruits", 
+                      "Treenuts" = "Fruits", "Fruits - Excluding Wine" = "Fruits", "" = "Fruits", 
+                         )
+fao1$Other <- recode(fao$Item, "Sesame seed" = "Other", "Cocoa Beans and products" = "Other", "Pepper" = "Other", 
+                     "Spices, Other" = "Other", "" = "Other", "Sugar cane" = "Other", "Sugar beet" = "Other","	Sugar (Raw Equivalent)" = "Other", "Sweeteners, Other" = "Other", "Honey" = "Other", "	Infant food" = "Other", "Cereals - Excluding Beer" = "Other", 
+                     "Starchy Roots" = "Other", "Sugar Crops" = "Other", "Sugar & Sweeteners" = "Other", 
+                     "Stimulants" = "Other", "Spices" = "Other", "" = "Other"
+                     
+                     )
+
+fao1$Beverage <- recode(fao$item, "Coffee and products" = "Beverage", "	Tea (including mate)" = "Beverage", "Wine" = "Beverage", 
+                        "	Beer" = "Beverage", "Beverages, Alcoholic" = "Beverage", "Alcoholic Beverages" = "Beverage",
+                        "" = "Beverage")
+
+fao1$Meat <- recode(fao$Item, "Bovine Meat" = "Meat", "Mutton & Goat Meat" = "Meat", "Poultry Meat" = "Meat", 
+                    "Offals, Edible" = "Meat", "Meat, Other" = "Meat", "Freshwater Fish" = "Meat", "Meat" = "Meat", 
+                    "" = "Meat", )
+
+fao1$AnimalProducts <- recode(fao$Item, "Butter, Ghee" = "AnimalProducts", "Cream" = "AnimalProducts", 
+                        "Fats, Animals, Raw" = "AnimalProducts", "Eggs" = "AnimalProducts", 
+                        "Milk - Excluding Butter" = "AnimalProducts", "" = "AnimalProducts",)
+print(fao1$grain)
 ```
 
