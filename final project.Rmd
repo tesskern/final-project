@@ -92,12 +92,25 @@ fao1$Other <- recode(fao1$Item, "Sesame seed" = "Other", "Cocoa Beans and produc
                      "Rape and Mustardseed" = "Other", "	Aquatic Animals, Others" = "Other", "Aquatic Plants" = "Other", 
                      "Aquatic Products, Other" = "Other", "Cloves" = "Other", "Sugar non-centrifugal" = "Other")
 
+########new way to ensure everything is recoded######
 
+
+# create new column for recoded "Fruits" values
+fao1$Fruit_Items <- recode(fao1$Fruits, "Nuts and products" = "Fruits", "Coconuts - Incl Copra" = "Fruits", "Olives (including preserved)" = "Fruits", "Tomatoes and products" = "Fruits", "Oranges, Mandarines" = "Fruits", "Citrus, Other" = "Fruits", "Bananas" = "Fruits", "Apples and products" = "Fruits", "Pineapples and products" = "Fruits", "Dates" = "Fruits", "Grapes and products (excl wine)" = "Fruits", "Fruits, Other" = "Fruits", "Treenuts" = "Fruits", "Fruits - Excluding Wine" = "Fruits", "Groundnuts (Shelled Eq)" = "Fruits", "Lemons, Limes and products" = "Fruits", "Grapefruit and products" = "Fruits", "Plantains" = "Fruits", "Pimento" = "Fruits")
+
+# use the new column as input for the second recode function to create the "Other" category
+fao1$other_Item <- recode(fao1$Fruit_Items, "Sesame seed" = "Other", "Cocoa Beans and products" = "Other", "Pepper" = "Other", "Spices, Other" = "Other", "Sugar cane" = "Other", "Sugar beet" = "Other", "Sugar (Raw Equivalent)" = "Other", "Sweeteners, Other" = "Other", "Honey" = "Other", "Infant food" = "Other", "Cereals - Excluding Beer" = "Other", "Starchy Roots" = "Other", "Sugar Crops" = "Other", "Sugar & Sweeteners" = "Other", "Stimulants" = "Other", "Spices" = "Other", "Miscellaneous" = "Other", "Roots, Other" = "Other", "Rape and Mustardseed" = "Other", "Aquatic Animals, Others" = "Other", "Aquatic Plants" = "Other", "Aquatic Products, Other" = "Other", "Cloves" = "Other", "Sugar non-centrifugal" = "Other")
+
+fao1$Item <- recode(fao1$other_Item, "Wheat and products" = "Grain", "Rice (Milled Equivalent)" = "Grain",
+                       "Barley and products" = "Grain", "Maize and products" = "Grain", "	Millet and products" = "Grain", 
+                       "Cereals, Other" = "Grain", "Pulses, Other and products" = "Grain", "Pulses" = "Grain", 
+                     "Rye and products" = "Grain", "Oat" = "Grain", "Sorghum and products" = "Grain", "Peas" = "Grain", 
+                     "Soyabeans" = "Grain", "	Palm kernels" = "Grain", "Sunflower seed" = "Grain", "Cottonseed" = "Grain")
+# subset the relevant columns and print them
 sub_food_fao1 <- subset(unique(fao1[, c("Item.Code", "Item")]), select = c("Item.Code", "Item"))
 # print the two columns next to each other
 print(sub_food_fao1)
-print(fao1$grain)
-print(fao1$Vegetable)
+
 ```
 
 
