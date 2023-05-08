@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
-fao <-read.csv("/Users/tesssgggg/Downloads/FAO.csv")
+fao <- read_csv("FAO.csv") 
 head(fao)
 dim(fao) 
 ```
