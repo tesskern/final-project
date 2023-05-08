@@ -28,76 +28,99 @@ library(units)
 ```
 
 ```{r}
-sub_food_fao <- subset(unique(fao[, c("Item.Code", "Item")]), select = c("Item.Code", "Item"))
+sub_food_fao <- subset(unique(fao[, c("Item Code", "Item")]), select = c("Item Code", "Item"))
 # print the two columns next to each other
-print(sub_food_fao)
+head(sub_food_fao)
 
 # use recode() to collapse levels into categories
 fao1 <- fao
+fao1$Item %>% discard(is.null)
 
-
-
-
-
-
-#one of these has an issue
-#Error in UseMethod("recode") : 
-  #no applicable method for 'recode' applied to an object of class "NULL"
-fao1$Item <- recode(fao1$Beverage, "Coffee and products" = "Beverage", "Tea (including mate)" = "Beverage", "Wine" = "Beverage", 
-                        "Beer" = "Beverage", "Beverages, Alcoholic" = "Beverage", "Alcoholic Beverages" = "Beverage",
-                        "Beverages, Fermented" = "Beverage")
-#Error in UseMethod("recode") : 
-  #no applicable method for 'recode' applied to an object of class "NULL"
-fao1$Item <- recode(fao1$Meat, "Bovine Meat" = "Meat", "Mutton & Goat Meat" = "Meat", "Poultry Meat" = "Meat", 
-                    "Offals, Edible" = "Meat", "Meat, Other" = "Meat", "Freshwater Fish" = "Meat", "Meat" = "Meat", 
-                   "Fish, Seafood" = "Meat", "Pigmeat" = "Meat", "	Demersal Fish" = "Meat",
-                    "Pelagic Fish" = "Meat", "Marine Fish, Other" = "Meat", "Crustaceans" = "Meat", "Cephalopods" = "Meat", 
-                    "Molluscs, Other" = "Meat", "Meat, Aquatic Mammals" = "Meat")
-
-
-########new way to ensure everything is recoded######
-
-
-# create new column for recoded "Fruits" values
-fao1$Fruit_Items <- recode(fao1$Fruits, "Nuts and products" = "Fruits", "Coconuts - Incl Copra" = "Fruits", "Olives (including preserved)" = "Fruits", "Tomatoes and products" = "Fruits", "Oranges, Mandarines" = "Fruits", "Citrus, Other" = "Fruits", "Bananas" = "Fruits", "Apples and products" = "Fruits", "Pineapples and products" = "Fruits", "Dates" = "Fruits", "Grapes and products (excl wine)" = "Fruits", "Fruits, Other" = "Fruits", "Treenuts" = "Fruits", "Fruits - Excluding Wine" = "Fruits", "Groundnuts (Shelled Eq)" = "Fruits", "Lemons, Limes and products" = "Fruits", "Grapefruit and products" = "Fruits", "Plantains" = "Fruits", "Pimento" = "Fruits")
-
-# use the new column as input for the second recode function to create the "Other" category
-fao1$other_Item <- recode(fao1$Fruit_Items, "Sesame seed" = "Other", "Cocoa Beans and products" = "Other", "Pepper" = "Other", "Spices, Other" = "Other", "Sugar cane" = "Other", "Sugar beet" = "Other", "Sugar (Raw Equivalent)" = "Other", "Sweeteners, Other" = "Other", "Honey" = "Other", "Infant food" = "Other", "Cereals - Excluding Beer" = "Other", "Starchy Roots" = "Other", "Sugar Crops" = "Other", "Sugar & Sweeteners" = "Other", "Stimulants" = "Other", "Spices" = "Other", "Miscellaneous" = "Other", "Roots, Other" = "Other", "Rape and Mustardseed" = "Other", "Aquatic Animals, Others" = "Other", "Aquatic Plants" = "Other", "Aquatic Products, Other" = "Other", "Cloves" = "Other", "Sugar non-centrifugal" = "Other")
-
-fao1$Item <- recode(fao1$other_Item, "Wheat and products" = "Grain", "Rice (Milled Equivalent)" = "Grain",
-                       "Barley and products" = "Grain", "Maize and products" = "Grain", "	Millet and products" = "Grain", 
-                       "Cereals, Other" = "Grain", "Pulses, Other and products" = "Grain", "Pulses" = "Grain", 
-                     "Rye and products" = "Grain", "Oat" = "Grain", "Sorghum and products" = "Grain", "Peas" = "Grain", 
-                     "Soyabeans" = "Grain", "	Palm kernels" = "Grain", "Sunflower seed" = "Grain", "Cottonseed" = "Grain")
-
-
-fao1$Vegetable_item <- recode(fao1$Item, "Potatoes and products" = "Vegetable", "Vegetables, Other" = "Vegetable", 
-                         "Vegetables" = "Vegetable", "Cassava and products" = "Vegetable", "Sweet potatoes" = "Vegetable", 
+fao1$Item <- recode(fao1$Item, "Potatoes and products" = "Vegetable", "Vegetables, Other" = "Vegetable",
+                         "Vegetables" = "Vegetable", "Cassava and products" = "Vegetable", "Sweet potatoes" = "Vegetable",
                          "Beans" = "Vegetable", "Onions" = "Vegetable", "Yams" = "Vegetable")
 
-fao1$Oil_item <- recode(fao1$Vegetable_item, "Soyabean Oil" = "Oil", "	Groundnut Oil" = "Oil", 
-                     "Sunflowerseed Oil" = "Oil", "	Rape and Mustard Oil" = "Oil", "Cottonseed Oil" = "Oil", 
-                   "Palm Oil" = "Oil", "	Sesameseed Oil" = "Oil", "Olive Oil" = "Oil", "Oilcrops Oil, Other" = "Oil", 
+fao1$Item <- recode(fao1$Item, "Soyabean Oil" = "Oil", "Groundnut Oil" = "Oil",
+                     "Sunflowerseed Oil" = "Oil", "Rape and Mustard Oil" = "Oil", "Cottonseed Oil" = "Oil",
+                   "Palm Oil" = "Oil", "Sesameseed Oil" = "Oil", "Olive Oil" = "Oil", "Oilcrops Oil, Other" = "Oil",
                    "Oilcrops" = "Oil", "Vegetable Oils" = "Oil", "Oilcrops, Other" = "Oil", "Maize Germ Oil" = "Oil",
-                   "Fish, Body Oil" = "Oil", "Fish, Liver Oil" = "Oil", "Coconut Oil" = "Oil", "Palmkernel Oil" = "Oil", 
+                   "Fish, Body Oil" = "Oil", "Fish, Liver Oil" = "Oil", "Coconut Oil" = "Oil", "Palmkernel Oil" = "Oil",
                    "Ricebran Oil" = "Oil")
 
-fao1$Animal_item <- recode(fao1$Oil_item, "Butter, Ghee" = "AnimalProducts", "Cream" = "AnimalProducts", 
-                        "Fats, Animals, Raw" = "AnimalProducts", "Eggs" = "AnimalProducts", 
-                        "Milk - Excluding Butter" = "AnimalProducts", "Eggs" = "AnimalProducts", 
-                        "Milk - Excluding Butter" = "AnimalProducts", "Animal fats" = "AnimalProducts", 
+fao1$Item <- recode(fao1$Item, "Coffee and products" = "Beverage", "Tea (including mate)" = "Beverage", "Wine" = "Beverage",
+                        "Beer" = "Beverage", "Beverages, Alcoholic" = "Beverage", "Alcoholic Beverages" = "Beverage",
+                        "Beverages, Fermented" = "Beverage")
+
+fao1$Item <- recode(fao1$Item, "Bovine Meat" = "Meat", "Mutton & Goat Meat" = "Meat", "Poultry Meat" = "Meat",
+                    "Offals, Edible" = "Meat", "Meat, Other" = "Meat", "Freshwater Fish" = "Meat", "Meat" = "Meat",
+                   "Fish, Seafood" = "Meat", "Pigmeat" = "Meat", "Demersal Fish" = "Meat",
+                    "Pelagic Fish" = "Meat", "Marine Fish, Other" = "Meat", "Crustaceans" = "Meat", "Cephalopods" = "Meat",
+                    "Molluscs, Other" = "Meat", "Meat, Aquatic Mammals" = "Meat")
+
+fao1$Item <- recode(fao1$Item, "Butter, Ghee" = "AnimalProducts", "Cream" = "AnimalProducts",
+                        "Fats, Animals, Raw" = "AnimalProducts", "Eggs" = "AnimalProducts",
+                        "Milk - Excluding Butter" = "AnimalProducts", "Eggs" = "AnimalProducts",
+                        "Milk - Excluding Butter" = "AnimalProducts", "Animal fats" = "AnimalProducts",
                         "Offals" = "AnimalProducts")
-# subset the relevant columns and print them
-sub_food_fao1 <- subset(unique(fao1[, c("Item.Code", "Item")]), select = c("Item.Code", "Item"))
+
+fao1$Item <- recode(fao1$Item, "Wheat and products" = "Grain", "Rice (Milled Equivalent)" = "Grain",
+                       "Barley and products" = "Grain", "Maize and products" = "Grain", "Millet and products" = "Grain",
+                       "Cereals, Other" = "Grain", "Pulses, Other and products" = "Grain", "Pulses" = "Grain",
+                     "Rye and products" = "Grain", "Oat" = "Grain", "Sorghum and products" = "Grain", "Peas" = "Grain",
+                     "Soyabeans" = "Grain", "Palm kernels" = "Grain", "Sunflower seed" = "Grain", "Cottonseed" = "Grain")
+
+fao1$Item <- recode(fao1$Item, "Nuts and products" = "Fruits", "Coconuts - Incl Copra" = "Fruits", "Olives (including preserved)" = "Fruits", "Tomatoes and products" = "Fruits", "Oranges, Mandarines" = "Fruits", "Citrus, Other" = "Fruits",
+                      "Bananas" = "Fruits", "Apples and products" = "Fruits", "Pineapples and products" = "Fruits",
+                      "Dates" = "Fruits", "Grapes and products (excl wine)" = "Fruits", "Fruits, Other" = "Fruits",
+                      "Treenuts" = "Fruits", "Fruits - Excluding Wine" = "Fruits", "Groundnuts (Shelled Eq)" = "Fruits",
+                      "Lemons, Limes and products" = "Fruits", "Grapefruit and products" = "Fruits",
+                      "Plantains" = "Fruits",  "Pimento" = "Fruits")
+
+fao1$Item <- recode(fao1$Item, "Sesame seed" = "Other", "Cocoa Beans and products" = "Other", "Pepper" = "Other",
+                     "Spices, Other" = "Other", "Sugar cane" = "Other", "Sugar beet" = "Other","Sugar (Raw Equivalent)" = "Other", "Sweeteners, Other" = "Other", "Honey" = "Other", "Infant food" = "Other", "Cereals - Excluding Beer" = "Other",
+                     "Starchy Roots" = "Other", "Sugar Crops" = "Other", "Sugar & Sweeteners" = "Other",
+                     "Stimulants" = "Other", "Spices" = "Other", "Miscellaneous" = "Other", "Roots, Other" = "Other",
+                     "Rape and Mustardseed" = "Other", "Aquatic Animals, Others" = "Other", "Aquatic Plants" = "Other",
+                     "Aquatic Products, Other" = "Other", "Cloves" = "Other", "Sugar non-centrifugal" = "Other")
+
+sub_food_fao1 <- subset(unique(fao1[, c("Item Code", "Item")]), select = c("Item Code", "Item"))
 # print the two columns next to each other
-print(sub_food_fao1)
+head(sub_food_fao1)
 
 ```
+```
+
 Time series plot
 ```{r}
-nasa %>% filter(x == 1, y == 1) %>%
-  ggplot(aes(x = time, y = temperature)) + geom_line()
+  ggplot(fao1, aes(x = Y1961, y = Element, group=Item, color = Item)) + geom_line()
 ```
+map plot
+```{r}
+head(fao1)
+
+ggplot(fao1, aes( x=longitude, y=latitude, color=Area)) + geom_point()
+
+
+
+library(ggplot2)
+library(maps)
+library(mapdata)
+
+# create a data frame with latitude and longitude coordinates
+fao1 <- fao1(longitude, latitude)
+
+# create a world map using the maps package
+world_map <- world_map("world")
+
+# plot the map and add the points for the locations data frame
+ggplot() +
+  geom_polygon(data = world_map, aes(x = longitude, y = latitude, group = group), fill = "gray") +
+  geom_point(data = locations, aes(x = lon, y = lat), color = "red") +
+  labs(title = "Map with latitude and longitude coordinates")
+```
+
+
+
 
 
 
