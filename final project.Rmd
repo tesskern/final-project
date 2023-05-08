@@ -92,7 +92,10 @@ head(sub_food_fao1)
 
 Time series plot
 ```{r}
-  ggplot(fao1, aes(x = Y1961, y = Element, group=Item, color = Item)) + geom_line()
+  ggplot(fao1, aes(x = c(Y1961,2013), y = Element, group=Item, color = Item)) + geom_line()
+  
+  
+  
 ```
 map plot
 ```{r}
