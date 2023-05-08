@@ -118,11 +118,22 @@ world_map <- world_map("world")
 # plot the map and add the points for the locations data frame
 ggplot() +
   geom_polygon(data = world_map, aes(x = longitude, y = latitude, group = group), fill = "gray") +
-  geom_point(data = locations, aes(x = lon, y = lat), color = "red") +
+  geom_point(data = fao1, aes(x = longitude, y = latitude), color = "red") +
   labs(title = "Map with latitude and longitude coordinates")
 ```
 
-
+```{r}
+#bar plot
+map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Country) + facet_grid(cols = vars(Year %in% c(1961, 1971, 1981, 1991, 2001, 2011))), position ="dodge")
+```
+ 
+ 
+```{r}
+library(sf)
+library(mapview)
+mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326).  bjdutyhdx
+mapview(mapspots, map.types = "Stamen.Toner")
+```
 
 
 
