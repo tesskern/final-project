@@ -15,7 +15,7 @@ dim(fao)
 ```
 
 ```{r}
-sub_fao <- subset(unique(fao[, c("Area.Abbreviation", "Area")]), select = c("Area.Abbreviation", "Area"))
+sub_fao <- subset(unique(fao[, c("Area Abbreviation", "Area")]), select = c("Area Abbreviation", "Area"))
 
 # print the two columns next to each other
 print(sub_fao)
