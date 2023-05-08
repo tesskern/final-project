@@ -88,14 +88,10 @@ sub_food_fao1 <- subset(unique(fao1[, c("Item Code", "Item")]), select = c("Item
 head(sub_food_fao1)
 
 ```
-```
 
 Time series plot
 ```{r}
   ggplot(fao1, aes(x = c(Y1961,2013), y = Element, group=Item, color = Item)) + geom_line()
-  
-  
-  
 ```
 map plot
 ```{r}
@@ -122,20 +118,50 @@ ggplot() +
   labs(title = "Map with latitude and longitude coordinates")
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r}
 #bar plot
-map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Country) + facet_grid(cols = vars(Year %in% c(1961, 1971, 1981, 1991, 2001, 2011))), position ="dodge")
+map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Area) + facet_grid(cols = vars(Year %in% c(Y1961, Y1971, Y1981, Y1991, Y2001, Y2011))), position ="dodge")
+map
 ```
- 
+
+
  
 ```{r}
 library(sf)
 library(mapview)
-mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326).  bjdutyhdx
+mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326)
+mapspots
 mapview(mapspots, map.types = "Stamen.Toner")
 ```
 
 
+```{r}
+fao1 %>% ggplot(aes(x=longitude, y=latitude)) + geom_point()
+```
 
 
 
