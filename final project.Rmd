@@ -85,23 +85,6 @@ head(sub_food_fao1)
 ```
 
 
-```{r}
-#Time series plot
-  ggplot(fao1, aes(x = c(Y1961, Y2013), y = Item, group=Element, color = Element)) + geom_line()
-  
-  
-# Load FAO data on wheat production
-wheat_data <- read.csv("wheat_production.csv")
-
-# Extract year and wheat production columns
-fao_ts <- ts(fao1$Item, start = c(Y1961, Y2013), frequency = 1)
-
-# Create a time series plot
-plot(fao_ts, main = "Wheat Production over Time", xlab = "Year", ylab = "Wheat Production (tonnes)")
-  
-  
-```
-
 ```{r, warning=FALSE}
 #Bar Chart
 ggplot(fao1, aes(x = Area, fill = Item)) +
@@ -113,6 +96,7 @@ ggplot(fao1, aes(x = Item)) +
     geom_bar(stat = "count") 
 ```
 ```{r}
+#bar chart
 countries <- c("USA", "AZE", "COD", "EGY", "UKR")
 
 fao2 <- subset(fao1, `Area Abbreviation` %in% countries)
@@ -121,31 +105,30 @@ ggplot(fao2, aes(x = Area, fill = Item)) +
     geom_bar(stat = "count") 
 print(sub_fao)
 ```
+```{r}
+head(fao)
+ggplot(fao2, aes(x = Area, y = Item) +
+    geom_line() 
+```
+```{r}
+library(ggmosaic)
 
-
+ggplot(data = fao2)  + 
+  geom_mosaic(aes(x = product(Area), fill=Item, weight=1))
+```
 
 ```{r}
 #map plot
-
-ggplot(fao1, aes( x=longitude, y=latitude, color=Area)) + geom_point()
-
-
-
+fao1 %>% ggplot(aes(x=longitude, y=latitude)) + geom_point()
+fao1
+#We couldn't get the world map to work as a backdrop for the plot. But, this graph does a justice of what we found. It is representing the latitude and longitude spots of all the countries represented in the data set. You can see the outline of various countries in Africa as well as a large population of countries located in Europe.
+```
+ 
+```{r}
+#histogram
 library(ggplot2)
-library(maps)
-library(mapdata)
-
-# create a data frame with latitude and longitude coordinates
-fao1 <- fao1(longitude, latitude)
-
-# create a world map using the maps package
-world_map <- world_map("world")
-
-# plot the map and add the points for the locations data frame
-ggplot() +
-  geom_polygon(data = world_map, aes(x = longitude, y = latitude, group = group), fill = "gray") +
-  geom_point(data = fao1, aes(x = longitude, y = latitude), color = "red") +
-  labs(title = "Map with latitude and longitude coordinates")
+ggplot(fao1, aes(Area = c(Jordan, Kenya, Kuwait)) + geom_bar(aes(fill = Element)), position = "dodge")
+```
 ```
 
 ```{r}
@@ -157,12 +140,6 @@ map
 ```
  
  
-```{r}
-library(sf)
-library(mapview)
-mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326).  
-mapview(mapspots, map.types = "Stamen.Toner")
-```
 
 
 
