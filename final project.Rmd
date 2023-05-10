@@ -22,12 +22,6 @@ print(sub_fao)
 ```
 
 ```{r}
-#install "units" package
-library(units)
-
-```
-
-```{r}
 sub_food_fao <- subset(unique(fao[, c("Item Code", "Item")]), select = c("Item Code", "Item"))
 # print the two columns next to each other
 head(sub_food_fao)
@@ -88,15 +82,35 @@ sub_food_fao1 <- subset(unique(fao1[, c("Item Code", "Item")]), select = c("Item
 head(sub_food_fao1)
 
 ```
+
+
+```{r}
+#Time series plot
+  ggplot(fao1, aes(x = c(Y1961, Y2013), y = Item, group=Element, color = Element)) + geom_line()
+  
+  
+# Load FAO data on wheat production
+wheat_data <- read.csv("wheat_production.csv")
+
+# Extract year and wheat production columns
+fao_ts <- ts(fao1$Item, start = c(Y1961, Y2013), frequency = 1)
+
+# Create a time series plot
+plot(fao_ts, main = "Wheat Production over Time", xlab = "Year", ylab = "Wheat Production (tonnes)")
+  
+  
+```
+```{r}
+ggplot(data = fao1, aes(x = Item)) + 
+  geom_bar(aes(weight = count)) +
+  coord_flip() + facet_wrap(~type, scale = "free")
+```
+```{r, warning=FALSE}
+head(fao1)
+ggplot(fao1, aes(x = Area, y = Item)) + geom_boxplot() + coord_flip()
 ```
 
-Time series plot
-```{r}
-  ggplot(fao1, aes(x = c(Y1961,2013), y = Element, group=Item, color = Item)) + geom_line()
-  
-  
-  
-```
+
 map plot
 ```{r}
 head(fao1)
@@ -131,7 +145,7 @@ map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Country) + facet
 ```{r}
 library(sf)
 library(mapview)
-mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326).  bjdutyhdx
+mapspots <- st_as_sf(fao1, coords = c("latitude", "longitude"),  crs = 4326).  
 mapview(mapspots, map.types = "Stamen.Toner")
 ```
 
