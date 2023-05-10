@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
+library(ggplot2)
 fao <- read_csv("FAO.csv") 
 head(fao)
 dim(fao) 
@@ -61,7 +62,7 @@ fao1$Item <- recode(fao1$Item, "Wheat and products" = "Grain", "Rice (Milled Equ
                        "Barley and products" = "Grain", "Maize and products" = "Grain", "Millet and products" = "Grain",
                        "Cereals, Other" = "Grain", "Pulses, Other and products" = "Grain", "Pulses" = "Grain",
                      "Rye and products" = "Grain", "Oat" = "Grain", "Sorghum and products" = "Grain", "Peas" = "Grain",
-                     "Soyabeans" = "Grain", "Palm kernels" = "Grain", "Sunflower seed" = "Grain", "Cottonseed" = "Grain")
+                     "Soyabeans" = "Grain", "Palm kernels" = "Grain", "Sunflower seed" = "Grain", "Cottonseed" = "Grain", "Oats" = "Grain")
 
 fao1$Item <- recode(fao1$Item, "Nuts and products" = "Fruits", "Coconuts - Incl Copra" = "Fruits", "Olives (including preserved)" = "Fruits", "Tomatoes and products" = "Fruits", "Oranges, Mandarines" = "Fruits", "Citrus, Other" = "Fruits",
                       "Bananas" = "Fruits", "Apples and products" = "Fruits", "Pineapples and products" = "Fruits",
@@ -100,20 +101,22 @@ plot(fao_ts, main = "Wheat Production over Time", xlab = "Year", ylab = "Wheat P
   
   
 ```
-```{r}
-ggplot(data = fao1, aes(x = Item)) + 
-  geom_bar(aes(weight = count)) +
-  coord_flip() + facet_wrap(~type, scale = "free")
-```
+
 ```{r, warning=FALSE}
-head(fao1)
-ggplot(fao1, aes(x = Area, y = Item)) + geom_boxplot() + coord_flip()
+#Bar Chart
+ggplot(fao1, aes(x = Area, fill = Item)) +
+    geom_bar(stat = "count") 
+```
+```{r}
+#bar chart
+ggplot(fao1, aes(x = Item)) +
+    geom_bar(stat = "count") 
 ```
 
 
-map plot
+
 ```{r}
-head(fao1)
+#map plot
 
 ggplot(fao1, aes( x=longitude, y=latitude, color=Area)) + geom_point()
 
@@ -139,6 +142,9 @@ ggplot() +
 ```{r}
 #bar plot
 map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Country) + facet_grid(cols = vars(Year %in% c(1961, 1971, 1981, 1991, 2001, 2011))), position ="dodge")
+map
+
+                                                     
 ```
  
  
