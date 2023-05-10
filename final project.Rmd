@@ -112,6 +112,15 @@ ggplot(fao1, aes(x = Area, fill = Item)) +
 ggplot(fao1, aes(x = Item)) +
     geom_bar(stat = "count") 
 ```
+```{r}
+countries <- c("USA", "AZE", "COD", "EGY", "UKR")
+
+fao2 <- subset(fao1, `Area Abbreviation` %in% countries)
+
+ggplot(fao2, aes(x = Area, fill = Item)) +
+    geom_bar(stat = "count") 
+print(sub_fao)
+```
 
 
 
