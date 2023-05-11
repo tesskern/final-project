@@ -97,7 +97,7 @@ ggplot(fao1, aes(x = Item)) +
 ```
 ```{r}
 #bar chart
-countries <- c("USA", "AZE", "COD", "EGY", "UKR")
+countries <- c("USA", "AZE", "SRB", "EGY", "LBR")
 
 fao2 <- subset(fao1, `Area Abbreviation` %in% countries)
 
@@ -105,11 +105,12 @@ ggplot(fao2, aes(x = Area, fill = Item)) +
     geom_bar(stat = "count") 
 print(sub_fao)
 ```
+
 ```{r}
 head(fao)
-ggplot(fao2, aes(x = Area, y = Item) +
-    geom_line() 
+ggplot(fao2, aes(x = Area, y = Item) + geom_line() 
 ```
+
 ```{r}
 library(ggmosaic)
 
@@ -123,21 +124,41 @@ fao1 %>% ggplot(aes(x=longitude, y=latitude)) + geom_point()
 fao1
 #We couldn't get the world map to work as a backdrop for the plot. But, this graph does a justice of what we found. It is representing the latitude and longitude spots of all the countries represented in the data set. You can see the outline of various countries in Africa as well as a large population of countries located in Europe.
 ```
+
+
+```{r}
+
+```
  
 ```{r}
 #histogram
-library(ggplot2)
-ggplot(fao1, aes(Area = c(Jordan, Kenya, Kuwait)) + geom_bar(aes(fill = Element)), position = "dodge")
-```
+
+countries <- c("LBR", "USA", "SRB", "ISL", "IND")
+ 
+fao3 <- subset(fao1, `Area Abbreviation` %in% countries)
+
+ggplot(fao3, aes(Area)) + geom_bar(aes(fill = Element), position = "dodge")
+#This hisogram show the differences between 5 countries selected at random in their feed and food exports. This is total across all years.
 ```
 
 ```{r}
-#bar plot
-map <- ggplot(fao1, aes(Item, ..count..)) + geom_bar(aes(fill = Country) + facet_grid(cols = vars(Year %in% c(1961, 1971, 1981, 1991, 2001, 2011))), position ="dodge")
-map
-
-                                                     
+#scatter
+ggplot(fao1, aes(x = Y2000, y = Unit)) + geom_point() + geom_jitter() + labs(x = "", y = "Value", title = "Year 2000 crop production across all countries")
+#This scatterplot shows the relationship between 199 and 2000 values. You can see a strong linear relationship. This means that values between 1999 and 2000 are similar, as if the value was low in 1999, it was low in 2000 as well.
 ```
+```{r}
+agg_data <- aggregate(data$Area, by = list(data$Area), FUN = mean))
+
+# Rename columns
+colnames(agg_data) <- c("Country", "Mean_Variable")
+
+# Print aggregated data
+agg_data
+
+
+ggplot(data = fao3, aes(x = "United States of America", y = Item)) + geom_boxplot() + coord_flip()
+```
+
  
  
 
