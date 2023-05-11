@@ -6,7 +6,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+We chose a data set that deals with crops grown around the world and some of their end uses.
 ```{r}
 library(tidyverse)
 library(ggplot2)
@@ -18,16 +18,17 @@ dim(fao)
 ```{r}
 sub_fao <- subset(unique(fao[, c("Area Abbreviation", "Area")]), select = c("Area Abbreviation", "Area"))
 
-# print the two columns next to each other
+# printing the two columns next to each other
 print(sub_fao)
+#This was how we determined each countries abbreviation. We were able to sort through the data without any repeats. 
 ```
 
 ```{r}
 sub_food_fao <- subset(unique(fao[, c("Item Code", "Item")]), select = c("Item Code", "Item"))
-# print the two columns next to each other
+# printing the two columns next to each other
 head(sub_food_fao)
 
-# use recode() to collapse levels into categories
+# using recode() to collapse levels into categories
 fao1 <- fao
 fao1$Item %>% discard(is.null)
 
@@ -79,10 +80,11 @@ fao1$Item <- recode(fao1$Item, "Sesame seed" = "Other", "Cocoa Beans and product
                      "Aquatic Products, Other" = "Other", "Cloves" = "Other", "Sugar non-centrifugal" = "Other")
 
 sub_food_fao1 <- subset(unique(fao1[, c("Item Code", "Item")]), select = c("Item Code", "Item"))
-# print the two columns next to each other
+# printing the two columns next to each other
 head(sub_food_fao1)
 
 ```
+There wasn't much cleaning that needed to be done. The most strenuous task was recoding the data, so we weren't dealing with too many variables. This took up quite a bit of time, but we made it through. We ran into a problem with some of the recoded data, and had to remove any NULL values. We also had issues making sure everything was put under the column "Item" when we recoded. For example: "fao1$Item <- recode(fao1$meat," did not work, so we changed 'meat' to 'Item' and that solved our issue. 
 
 
 ```{r, warning=FALSE}
@@ -90,11 +92,14 @@ head(sub_food_fao1)
 ggplot(fao1, aes(x = Area, fill = Item)) +
     geom_bar(stat = "count") 
 ```
+
+
 ```{r}
 #bar chart
 ggplot(fao1, aes(x = Item)) +
     geom_bar(stat = "count") 
 ```
+
 ```{r}
 #bar chart
 countries <- c("USA", "AZE", "SRB", "EGY", "LBR")
@@ -103,13 +108,9 @@ fao2 <- subset(fao1, `Area Abbreviation` %in% countries)
 
 ggplot(fao2, aes(x = Area, fill = Item)) +
     geom_bar(stat = "count") 
-print(sub_fao)
+
 ```
 
-```{r}
-head(fao)
-ggplot(fao2, aes(x = Area, y = Item) + geom_line() 
-```
 
 ```{r}
 library(ggmosaic)
@@ -125,10 +126,6 @@ fao1
 #We couldn't get the world map to work as a backdrop for the plot. But, this graph does a justice of what we found. It is representing the latitude and longitude spots of all the countries represented in the data set. You can see the outline of various countries in Africa as well as a large population of countries located in Europe.
 ```
 
-
-```{r}
-
-```
  
 ```{r}
 #histogram
@@ -147,18 +144,29 @@ ggplot(fao1, aes(x = Y2000, y = Unit)) + geom_point() + geom_jitter() + labs(x =
 #This scatterplot shows the relationship between 199 and 2000 values. You can see a strong linear relationship. This means that values between 1999 and 2000 are similar, as if the value was low in 1999, it was low in 2000 as well.
 ```
 ```{r}
-agg_data <- aggregate(data$Area, by = list(data$Area), FUN = mean))
+agg_data <- aggregate(data$Area, by = list(data$Area), FUN = mean)
 
 # Rename columns
 colnames(agg_data) <- c("Country", "Mean_Variable")
 
+
+# Fix the subset command using square brackets
+subset_data <- data[Area == "USA", ]
+
+
+
 # Print aggregated data
 agg_data
 
-
+boxplot(Mean_Variable ~ Country, data = agg_data, 
+        xlab = "Country", ylab = "Mean Variable")
 ggplot(data = fao3, aes(x = "United States of America", y = Item)) + geom_boxplot() + coord_flip()
 ```
 
+```{r}
+head(fao)
+ggplot(fao2, aes(x = Area, y = Item) + geom_line() 
+```
  
  
 
