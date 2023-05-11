@@ -165,7 +165,7 @@ ggplot(data = fao3, aes(x = "United States of America", y = Item)) + geom_boxplo
 
 ```{r}
 head(fao)
-ggplot(fao2, aes(x = Area, y = Item) + geom_line() 
+ggplot(fao2, aes(x = Area, y = Item)) + geom_line() 
 ```
  
  
