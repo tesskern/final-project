@@ -167,6 +167,45 @@ ggplot(data = fao3, aes(x = "United States of America", y = Item)) + geom_boxplo
 head(fao)
 ggplot(fao2, aes(x = Area, y = Item)) + geom_line() 
 ```
+
+```{r}
+#Boxplot
+
+#Question: Comparing the median spread of different Items produced in the year 2000 between the countries Mexico and Thailand
+
+fao4 = fao1 %>% filter(`Area Code` == c("138", "216"))
+
+ggplot(data = fao4, aes(x = Item, y = Y2000, fill=Item)) + geom_boxplot() + facet_grid(.~Area) + coord_flip() +stat_summary(fun=mean, geom="point", shape=5, size=3)
+
+# The diamonds present in the plot represent the mean. It can be noticed that in the Year 2000, the spread of Animal products and Beverage in Mexico was high whereas in thailand the category of other items was high. There are also many outliers present in the boxplots.
+```
+
+```{r}
+#Time Series
+
+
+fao5 = fao1 %>% filter(`Area Abbreviation` == "USA") %>% group_by(Item) %>% summarise("1961" = sum(Y1961), "1962" = sum(Y1962), "1963" = sum(Y1963), "1964" = sum(Y1964), "1965" = sum(Y1965), "1966" = sum(Y1966), "1967" = sum(Y1967), "1968" = sum(Y1968), "1969" = sum(Y1969), "1970" = sum(Y1970), "1971" = sum(Y1971), "1972" = sum(Y1972), "1973" = sum(Y1973), "1974" = sum(Y1974), "1975" = sum(Y1975), "1976" = sum(Y1976), "1977" = sum(Y1977), "1978" = sum(Y1978), "1979" = sum(Y1979), "1980" = sum(Y1980), "1981" = sum(Y1981), "1982" = sum(Y1982), "1983" = sum(Y1983), "1984" = sum(Y1984), "1985" = sum(Y1985), "1986" = sum(Y1986), "1987" = sum(Y1987), "1988" = sum(Y1988), "1989" = sum(Y1989), "1990" = sum(Y1990), "1991" = sum(Y1991), "1992" = sum(Y1992), "1993" = sum(Y1993), "1994" = sum(Y1994), "1995" = sum(Y1995), "1996" = sum(Y1996), "1997" = sum(Y1997), "1998" = sum(Y1998), "1999" = sum(Y1999), "2000" = sum(Y2000))
+
+fao_5 <- as.data.frame(t(fao5))
+fao_5 = fao_5[-1,]
+library(tibble)
+fao_5 <- tibble::rownames_to_column(fao_5, "Year")
+colnames(fao_5)[2]  <- "AnimalProducts"
+colnames(fao_5)[3]  <- "Beverage"
+colnames(fao_5)[4]  <- "Fruits"
+colnames(fao_5)[5]  <- "Grain"
+colnames(fao_5)[6]  <- "Meat"
+colnames(fao_5)[7]  <- "Oil"
+colnames(fao_5)[8]  <- "Other"
+colnames(fao_5)[9]  <- "Vegetable"
+
+y_things <- cbind(fao_5$AnimalProducts,fao_5$Fruits)
+
+
+ggplot(data = fao_5, aes(x = Year)) + geom_line(aes(y = AnimalProducts, group = 1), color = "darkred") + geom_line(aes(y = Beverage, group = 1), color="steelblue") + geom_line(aes(y = Fruits, group = 1), color="darkorchid") + geom_line(aes(y = Grain, group = 1), color="aquamarine2") + geom_line(aes(y = Meat, group = 1), color="darkgray") + geom_line(aes(y = Oil, group = 1), color="coral") + geom_line(aes(y = Other, group = 1), color="deeppink") + geom_line(aes(y = Vegetable, group = 1), color="black")+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank(), axis.text.x = element_text(angle = 90)) + labs(y = "Trend")
+
+#This time series plot represents the trend in total amount of items produced in USA.It can be noticed that the category of Grains and Other food items have been the most produced in US whereas Oils are the least produced food items. The Production of Vegetables has the highest slope. AnimalProducts have relatively remained steady.
+```
  
  
 
